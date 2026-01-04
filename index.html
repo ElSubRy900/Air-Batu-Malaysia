@@ -1,33 +1,32 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <title>Kampung Chill | Air Batu Malaysia</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://esm.sh">
+    <link rel="dns-prefetch" href="https://images.unsplash.com">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    
     <style>
+        /* Default Variables (Midnight Dark) */
         :root {
             --bg-color: #020617;
             --bg-nav: rgba(15, 23, 42, 0.95);
-            --bg-card: #020617;
+            --bg-card: #0f172a;
             --text-color: #f8fafc;
             --text-muted: #94a3b8;
             --border-color: #1e293b;
-            --accent-glow: rgba(244, 114, 182, 0.1);
+            --accent-color: #db2777;
         }
 
-        .theme-dark {
-            --bg-color: #020617;
-            --bg-nav: rgba(15, 23, 42, 0.95);
-            --bg-card: #020617;
-            --text-color: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #1e293b;
-            --accent-glow: rgba(244, 114, 182, 0.1);
-        }
-
+        /* Light Theme Overrides (Nostalgic Paper) */
         .theme-light {
             --bg-color: #f8fafc;
             --bg-nav: rgba(255, 255, 255, 0.9);
@@ -35,9 +34,10 @@
             --text-color: #0f172a;
             --text-muted: #64748b;
             --border-color: #e2e8f0;
-            --accent-glow: rgba(244, 114, 182, 0.05);
+            --accent-color: #be185d;
         }
 
+        /* Global Styles */
         html, body {
             height: 100%;
             width: 100%;
@@ -45,43 +45,43 @@
             padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
         }
 
         #root {
-            min-height: 100vh;
             min-height: 100dvh;
             display: flex;
             flex-direction: column;
             width: 100%;
-            position: relative;
         }
 
         .theme-container {
             background-color: var(--bg-color);
-            transition: background-color 0.4s ease, color 0.4s ease;
-            width: 100%;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .font-kampung {
-            font-family: 'Playfair Display', serif;
-        }
-
-        .text-gradient-primary {
-            background: linear-gradient(to right, #ef4444, #facc15, #22c55e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.2));
+            min-height: 100dvh;
         }
 
         .theme-card { background-color: var(--bg-card); border-color: var(--border-color); }
         .theme-nav { background-color: var(--bg-nav); border-color: var(--border-color); }
         .theme-text-muted { color: var(--text-muted); }
+
+        .font-kampung { font-family: 'Playfair Display', serif; font-display: swap; }
+        
+        .text-gradient-primary {
+            background: linear-gradient(to right, #ef4444, #facc15, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media screen and (min-width: 641px) {
+            .app-container {
+                max-width: 500px !important;
+                margin: 0 auto !important;
+                border-left: 1px solid var(--border-color);
+                border-right: 1px solid var(--border-color);
+                box-shadow: 0 0 50px rgba(0,0,0,0.1);
+            }
+        }
 
         @keyframes marquee {
           0% { transform: translateX(100%); }
@@ -91,24 +91,10 @@
           display: inline-block;
           white-space: nowrap;
           animation: marquee 15s linear infinite;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        /* Essential for Desktop Site mode on mobile browsers */
-        @media screen and (min-width: 641px) {
-            .app-container {
-                max-width: 500px !important;
-                margin-left: auto !important;
-                margin-right: auto !important;
-                border-left: 1px solid var(--border-color);
-                border-right: 1px solid var(--border-color);
-                box-shadow: 0 0 100px rgba(0,0,0,0.5);
-            }
+          will-change: transform;
         }
     </style>
+
 <script type="importmap">
 {
   "imports": {

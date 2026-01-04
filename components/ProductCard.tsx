@@ -16,7 +16,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, currentStock, onAddT
 
   return (
     <div className={`rounded-[1.5rem] overflow-hidden theme-card border hover:border-pink-500/30 transition-all duration-300 relative group flex flex-col h-full shadow-lg w-full`}>
-      {/* status overlays - scaled for smaller cards */}
       {isSoldOut && (
         <div className="absolute inset-0 z-10 bg-[var(--bg-color)]/80 backdrop-blur-[2px] flex items-center justify-center p-2 text-center">
           <div className="bg-red-600 text-white font-black px-3 py-1 rounded-full rotate-[-5deg] shadow-lg text-[8px] uppercase tracking-widest border border-red-400">Sold Out</div>
@@ -29,9 +28,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, currentStock, onAddT
         </div>
       )}
       
-      <div className="relative h-32 sm:h-64 overflow-hidden w-full">
+      <div className="relative h-32 sm:h-64 overflow-hidden w-full bg-slate-900">
+        {/* Fix: Property 'fetchpriority' does not exist on type 'DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>'. Did you mean 'fetchPriority'? */}
         <img 
           src={product.image} 
+          loading="lazy"
+          decoding="async"
+          fetchPriority="low"
           className={`w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 ${isDisabled ? 'grayscale opacity-50' : 'opacity-80 group-hover:opacity-100'}`} 
           alt={product.name} 
         />
