@@ -1,8 +1,8 @@
-
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import OrderQueue from './OrderQueue';
 import StockManager from './StockManager';
 import { Order, OrderStatus } from '../types';
+import { ORDER_NOTIFICATION_SOUND } from '../constants'; // Import sound constant
 
 interface StaffDashboardModalProps {
   isOpen: boolean;
@@ -15,6 +15,9 @@ interface StaffDashboardModalProps {
   onRestockAll: () => void;
   currentTheme: 'dark' | 'light';
   onToggleTheme: () => void;
+  isShopOpen: boolean;
+  onToggleShopStatus: () => void;
+  hasPendingOrders: boolean; // New prop for sound alert
 }
 
 const StaffDashboardModal: React.FC<StaffDashboardModalProps> = ({
@@ -27,12 +30,75 @@ const StaffDashboardModal: React.FC<StaffDashboardModalProps> = ({
   onUpdateStock,
   onRestockAll,
   currentTheme,
-  onToggleTheme
+  onToggleTheme,
+  isShopOpen,
+  onToggleShopStatus,
+  hasPendingOrders // Destructure new prop
 }) => {
+  const [isSoundPlaying, setIsSoundPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const intervalRef = useRef<number | null>(null);
+
+  // Effect to manage the sound alert loop
+  useEffect(() => {
+    // Start playing sound if there are pending orders and sound is enabled
+    if (isOpen && hasPendingOrders && isSoundPlaying) {
+      if (audioRef.current) {
+        audioRef.current.play().catch(e => console.log("Audio play prevented:", e)); // Autoplay might be blocked
+      }
+
+      // Set up interval for repeated dings
+      intervalRef.current = window.setInterval(() => {
+        if (audioRef.current) {
+          audioRef.current.currentTime = 0; // Rewind to start
+          audioRef.current.play().catch(e => console.log("Audio play prevented:", e));
+        }
+      }, 3000); // Ding every 3 seconds
+    } else {
+      // Stop sound and clear interval if no pending orders or sound is disabled/modal closed
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0; // Reset audio to start
+      }
+    }
+
+    // Cleanup function for when component unmounts or dependencies change
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+  }, [isOpen, hasPendingOrders, isSoundPlaying]);
+
+  // When the dashboard opens, if there are pending orders, enable sound
+  useEffect(() => {
+    if (isOpen && hasPendingOrders) {
+      setIsSoundPlaying(true);
+    } else if (!isOpen || !hasPendingOrders) {
+      setIsSoundPlaying(false);
+    }
+  }, [isOpen, hasPendingOrders]);
+
+
+  const handleOrderAccepted = () => {
+    setIsSoundPlaying(false); // Stop the sound when an order is accepted
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className={`theme-container theme-${currentTheme} fixed inset-0 z-[80] bg-[var(--bg-color)] flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-500 overflow-hidden transition-colors`}>
+      <audio ref={audioRef} src={ORDER_NOTIFICATION_SOUND} preload="auto" /> {/* Audio element */}
+
       {/* Dashboard Header */}
       <div className="sticky top-0 z-10 theme-nav backdrop-blur-xl border-b px-6 py-4 flex justify-between items-center transition-colors">
         <div className="flex items-center gap-3">
@@ -43,7 +109,17 @@ const StaffDashboardModal: React.FC<StaffDashboardModalProps> = ({
           </div>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
+          {/* Shop Status Toggle */}
+          <div className="flex items-center gap-2">
+            <span className="text-[9px] font-black uppercase tracking-widest theme-text-muted">Shop Status:</span>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" value="" className="sr-only peer" checked={isShopOpen} onChange={onToggleShopStatus} />
+              <div className="w-11 h-6 bg-slate-500/20 rounded-full peer peer-focus:ring-2 peer-focus:ring-pink-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+              <span className="ml-2 text-sm font-medium text-[var(--text-color)]">{isShopOpen ? 'Open' : 'Closed'}</span>
+            </label>
+          </div>
+
           {/* Independent Theme Toggle for Staff */}
           <button 
             onClick={onToggleTheme}
@@ -73,6 +149,7 @@ const StaffDashboardModal: React.FC<StaffDashboardModalProps> = ({
             orders={orders} 
             onUpdateStatus={onUpdateStatus} 
             onClearOrders={onClearOrders} 
+            onOrderAccepted={handleOrderAccepted} // Pass callback
           />
           <StockManager 
             stocks={stocks} 

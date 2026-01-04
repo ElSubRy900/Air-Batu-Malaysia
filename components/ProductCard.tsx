@@ -1,18 +1,18 @@
-
 import React from 'react';
 import { Product } from '../types';
 
 interface ProductCardProps {
   product: Product;
   currentStock: number;
-  isShopOpen: boolean;
+  isShopOpen: boolean; // Added this prop
   onAddToCart: (product: Product) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, currentStock, onAddToCart }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, currentStock, isShopOpen, onAddToCart }) => {
   const isSoldOut = currentStock <= 0 && !product.isComingSoon;
   const isComingSoon = product.isComingSoon;
-  const isDisabled = isSoldOut || isComingSoon;
+  // Disabled if sold out, coming soon, OR the shop is closed
+  const isDisabled = isSoldOut || isComingSoon || !isShopOpen;
 
   return (
     <div className={`rounded-[1.5rem] overflow-hidden theme-card border hover:border-pink-500/30 transition-all duration-300 relative group flex flex-col h-full shadow-lg w-full`}>
@@ -29,7 +29,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, currentStock, onAddT
       )}
       
       <div className="relative h-32 sm:h-64 overflow-hidden w-full bg-slate-900">
-        {/* Fix: Property 'fetchpriority' does not exist on type 'DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>'. Did you mean 'fetchPriority'? */}
         <img 
           src={product.image} 
           loading="lazy"
@@ -58,7 +57,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, currentStock, onAddT
               : 'bg-pink-600 text-white hover:bg-pink-500'
           }`}
         >
-          {isSoldOut ? 'Sold Out' : isComingSoon ? 'SOON' : 'Add to Basket'}
+          {/* Prioritize 'Shop Closed' if shop is not open */}
+          {!isShopOpen ? 'Shop Closed' : (isSoldOut ? 'Sold Out' : isComingSoon ? 'Soon' : 'Add to Basket')}
         </button>
       </div>
     </div>

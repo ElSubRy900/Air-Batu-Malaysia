@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Order, OrderStatus } from '../types';
 
@@ -6,9 +5,10 @@ interface OrderQueueProps {
   orders: Order[];
   onUpdateStatus: (id: string, status: OrderStatus) => void;
   onClearOrders: () => void;
+  onOrderAccepted: () => void; // New prop
 }
 
-const OrderQueue: React.FC<OrderQueueProps> = ({ orders, onUpdateStatus, onClearOrders }) => {
+const OrderQueue: React.FC<OrderQueueProps> = ({ orders, onUpdateStatus, onClearOrders, onOrderAccepted }) => {
   const sortedOrders = [...orders].sort((a, b) => b.timestamp - a.timestamp);
 
   const getStatusColor = (status: OrderStatus) => {
@@ -67,7 +67,7 @@ const OrderQueue: React.FC<OrderQueueProps> = ({ orders, onUpdateStatus, onClear
                 <div className="flex flex-wrap gap-2">
                   {order.status === 'pending' && (
                     <button 
-                      onClick={() => onUpdateStatus(order.id, 'accepted')}
+                      onClick={() => { onUpdateStatus(order.id, 'accepted'); onOrderAccepted(); }} // Call onOrderAccepted here
                       className="px-4 py-2 bg-emerald-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-md hover:bg-emerald-600 transition-colors animate-pulse"
                     >
                       Accept Order

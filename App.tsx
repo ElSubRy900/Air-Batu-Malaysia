@@ -9,12 +9,15 @@ import LiveStatusBoard from './components/LiveStatusBoard';
 import { Product, CartItem, Order, OrderStatus } from './types';
 import { PRODUCTS, PICKUP_LOCATION, BUSINESS_NAME, ORDER_NOTIFICATION_SOUND } from './constants';
 import { getFlavorRecommendation } from './services/geminiService';
+// Add missing import for GoogleGenAI
+import { GoogleGenAI } from '@google/genai';
 
 const STOCK_STORAGE_KEY = 'air-batu-stock-v3';
 const ORDERS_STORAGE_KEY = 'air-batu-orders-v3';
 const ACTIVE_ORDER_ID_KEY = 'active-order-id-v3';
 const CUSTOMER_THEME_KEY = 'air-batu-theme-customer';
 const STAFF_THEME_KEY = 'air-batu-theme-staff';
+const SHOP_STATUS_KEY = 'air-batu-shop-status'; // New: Key for shop status
 
 const App: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -28,6 +31,7 @@ const App: React.FC = () => {
   
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [staffTheme, setStaffTheme] = useState<'dark' | 'light'>('dark');
+  const [isShopOpen, setIsShopOpen] = useState(true); // New: Shop status state
   
   const hasFetchedRec = useRef(false);
 
@@ -54,6 +58,12 @@ const App: React.FC = () => {
 
     const savedActiveID = localStorage.getItem(ACTIVE_ORDER_ID_KEY);
     if (savedActiveID) setActiveOrderID(savedActiveID);
+
+    // New: Load shop status
+    const savedShopStatus = localStorage.getItem(SHOP_STATUS_KEY);
+    if (savedShopStatus !== null) {
+      setIsShopOpen(JSON.parse(savedShopStatus));
+    }
   }, []);
 
   // Synchronize theme state with the document class for global CSS variable updates
@@ -68,6 +78,9 @@ const App: React.FC = () => {
       hasFetchedRec.current = true;
       const fetchRecommendation = async () => {
         try {
+          // IMPORTANT: Create GoogleGenAI instance right before the API call
+          // to ensure it uses the most up-to-date API_KEY from window.aistudio.openSelectKey()
+          const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
           const rec = await getFlavorRecommendation('Happy', 'Hot');
           setAiRecommendation(rec);
         } catch (err) {
@@ -82,6 +95,9 @@ const App: React.FC = () => {
   }, []);
 
   const addToCart = (product: Product) => {
+    // Only allow adding to cart if shop is open
+    if (!isShopOpen) return;
+
     const totalStock = productStocks[product.id] || 0;
     const existingInCart = cart.find(item => item.id === product.id)?.quantity || 0;
     if (existingInCart >= totalStock) return;
@@ -96,6 +112,9 @@ const App: React.FC = () => {
   };
 
   const placeOrder = (customerName: string, customerPhone: string) => {
+    // Only allow placing order if shop is open
+    if (!isShopOpen) return;
+
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const updatedStocks = { ...productStocks };
     cart.forEach(item => {
@@ -147,8 +166,20 @@ const App: React.FC = () => {
     }
   };
 
+  // New: Function to toggle shop status
+  const onToggleShopStatus = () => {
+    setIsShopOpen(prev => {
+      const newState = !prev;
+      localStorage.setItem(SHOP_STATUS_KEY, JSON.stringify(newState));
+      return newState;
+    });
+  };
+
   const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const cartItemCount = cart.reduce((s, i) => s + i.quantity, 0);
+
+  // Determine if there are any active orders for the sound alert in staff dashboard
+  const hasPendingOrders = orders.some(order => ['pending', 'accepted'].includes(order.status));
 
   if (activeOrderID && !isAdmin) {
     const currentOrder = orders.find(o => o.id === activeOrderID);
@@ -184,7 +215,18 @@ const App: React.FC = () => {
         }}
       />
 
-      <main className={`flex-1 px-4 sm:px-8 pt-4 w-full ${cartItemCount > 0 ? 'pb-32' : 'pb-20'}`}>
+      <main className={`flex-1 px-4 sm:px-8 pt-4 w-full ${cartItemCount > 0 ? 'pb-32' : 'pb-20'} relative`}> {/* Added relative for overlay positioning */}
+        {/* Shop Closed Overlay */}
+        {!isShopOpen && (
+          <div className="absolute inset-0 z-30 bg-[var(--bg-color)]/80 backdrop-blur-sm flex items-center justify-center p-8 text-center rounded-[2.5rem] mt-4 mb-20">
+            <div className="flex flex-col items-center gap-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-red-500 opacity-80"><path d="m7.414 18.586 9.172-9.172"/><path d="M18 18 6 6"/><circle cx="12" cy="12" r="10"/></svg>
+              <h3 className="font-kampung text-4xl sm:text-5xl text-red-500 font-black uppercase tracking-tighter">Shop Closed</h3>
+              <p className="text-lg sm:text-xl font-bold theme-text-muted">We'll be back soon!</p>
+            </div>
+          </div>
+        )}
+
         <header className="mb-8 text-center flex flex-col items-center">
           <h1 className="font-kampung text-4xl sm:text-5xl md:text-6xl tracking-tighter leading-tight font-black text-gradient-primary mb-10 max-w-lg">
             AIR BATU MALAYSIA / ICE LOLLY MALAYSIA
@@ -227,7 +269,7 @@ const App: React.FC = () => {
                 key={product.id} 
                 product={product} 
                 currentStock={Math.max(0, (productStocks[product.id] || 0) - (cart.find(item => item.id === product.id)?.quantity || 0))} 
-                isShopOpen={true} 
+                isShopOpen={isShopOpen} // Pass new prop
                 onAddToCart={addToCart} 
               />
             ))}
@@ -261,7 +303,7 @@ const App: React.FC = () => {
       </footer>
 
       {/* Floating Cart Preview */}
-      {cartItemCount > 0 && !isAdmin && (
+      {cartItemCount > 0 && !isAdmin && isShopOpen && (
         <div className="fixed bottom-0 inset-x-0 z-40 pointer-events-none pb-[env(safe-area-inset-bottom,0px)]">
           <div className="max-w-[500px] mx-auto w-full px-4 sm:px-0">
             <div className="pointer-events-auto theme-nav backdrop-blur-xl border-t px-6 py-6 flex items-center justify-between shadow-[0_-10px_30px_rgba(0,0,0,0.2)] rounded-t-[2.5rem] border-x border-t border-[var(--border-color)]">
@@ -281,7 +323,7 @@ const App: React.FC = () => {
         </div>
       )}
 
-      <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} cart={cart} setCart={setCart} onOrderPlaced={placeOrder} />
+      <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} cart={cart} setCart={setCart} onOrderPlaced={placeOrder} isShopOpen={isShopOpen} />
       <FindOrderModal isOpen={isFindModalOpen} onClose={() => setIsFindModalOpen(false)} onFind={handleFindOrder} />
       <StaffDashboardModal 
         isOpen={isAdmin} 
@@ -311,6 +353,9 @@ const App: React.FC = () => {
         }} 
         currentTheme={staffTheme} 
         onToggleTheme={() => setStaffTheme(staffTheme === 'dark' ? 'light' : 'dark')} 
+        isShopOpen={isShopOpen} 
+        onToggleShopStatus={onToggleShopStatus} 
+        hasPendingOrders={hasPendingOrders} // Pass this new prop
       />
     </div>
   );

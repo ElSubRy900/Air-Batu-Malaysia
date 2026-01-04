@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { CartItem } from '../types';
 import { PICKUP_LOCATION } from '../constants';
@@ -10,9 +9,10 @@ interface CartProps {
   cart: CartItem[];
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
   onOrderPlaced: (name: string, phone: string) => void;
+  isShopOpen: boolean; // New prop: Shop status
 }
 
-const Cart: React.FC<CartProps> = ({ isOpen, onClose, cart, setCart, onOrderPlaced }) => {
+const Cart: React.FC<CartProps> = ({ isOpen, onClose, cart, setCart, onOrderPlaced, isShopOpen }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -86,10 +86,15 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, cart, setCart, onOrderPlac
                 </div>
                 <button 
                   onClick={() => setIsFormOpen(true)} 
-                  className="w-full bg-[var(--text-color)] text-[var(--bg-color)] font-black py-5 rounded-3xl shadow-xl uppercase text-xs tracking-widest hover:opacity-90 transition-all"
+                  disabled={!isShopOpen} // Disable if shop is closed
+                  className={`w-full bg-[var(--text-color)] text-[var(--bg-color)] font-black py-5 rounded-3xl shadow-xl uppercase text-xs tracking-widest hover:opacity-90 transition-all
+                    ${!isShopOpen ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   Confirm and Order
                 </button>
+                {!isShopOpen && (
+                  <p className="text-red-500 text-[10px] font-black uppercase tracking-tighter mt-2 text-center">Shop is currently closed for orders</p>
+                )}
               </div>
             )}
           </div>

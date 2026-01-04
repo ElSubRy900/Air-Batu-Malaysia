@@ -1,4 +1,3 @@
-
 import { GoogleGenAI } from "@google/genai";
 
 export const getFlavorRecommendation = async (mood: string, weather: string) => {
