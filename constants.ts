@@ -14,7 +14,7 @@ export const PRODUCTS: Product[] = [
     description: 'Sweet, juicy, and incredibly refreshing. The perfect summer cooler.',
     price: 2.00,
     category: 'Classic',
-    image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=600',
+    image: 'https://i.postimg.cc/GmbZXz7J/Watermelon.jpg', // Updated to the new direct image link
     color: 'bg-red-50'
   },
   {
@@ -23,7 +23,7 @@ export const PRODUCTS: Product[] = [
     description: 'Creamy milk tea with rich caramel-like brown sugar swirls.',
     price: 2.00,
     category: 'Premium',
-    image: 'https://images.unsplash.com/photo-1544787210-2211d247317e?auto=format&fit=crop&q=80&w=600',
+    image: 'https://i.postimg.cc/fLbz1D8j/Brownsugarmilktea.jpg', // Updated to the new direct image link
     color: 'bg-stone-50'
   },
   {
@@ -32,7 +32,7 @@ export const PRODUCTS: Product[] = [
     description: 'A smooth blend of aromatic coffee with a nutty hazelnut finish.',
     price: 2.00,
     category: 'Classic',
-    image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=600',
+    image: 'https://i.postimg.cc/CLbRGMXZ/Hazelnutcoffee.jpg', // Updated to the new direct image link
     color: 'bg-amber-50'
   },
   {
@@ -41,7 +41,7 @@ export const PRODUCTS: Product[] = [
     description: 'A magical blue treat with a sweet and creamy vanilla flavor.',
     price: 2.00,
     category: 'Classic',
-    image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&q=80&w=600',
+    image: 'https://i.postimg.cc/52NfXxVJ/Vanillablue.jpg', // Updated to the new direct image link
     color: 'bg-blue-50'
   },
   {
@@ -50,7 +50,7 @@ export const PRODUCTS: Product[] = [
     description: 'Fun, sweet, and nostalgic. A favorite for the young and young at heart.',
     price: 2.00,
     category: 'Classic',
-    image: 'https://images.unsplash.com/photo-1559181567-c3190cb9959b?auto=format&fit=crop&q=80&w=600',
+    image: 'https://i.postimg.cc/7ZYq5xkr/Bubblegum.jpg', // Updated to the new direct image link
     color: 'bg-pink-50'
   },
   {
@@ -59,7 +59,7 @@ export const PRODUCTS: Product[] = [
     description: 'Rich, velvety cocoa goodness. A timeless classic for chocolate lovers.',
     price: 2.00,
     category: 'Classic',
-    image: 'https://images.unsplash.com/photo-1548365328-8c6db3220e4c?auto=format&fit=crop&q=80&w=600',
+    image: 'https://i.postimg.cc/dVtJhqYq/Chocolate.jpg', // Updated to the new direct image link
     color: 'bg-orange-50'
   },
   {
@@ -68,7 +68,7 @@ export const PRODUCTS: Product[] = [
     description: 'Light, sweet, and fragrant melon. Cooling and delightful.',
     price: 2.00,
     category: 'Classic',
-    image: 'https://images.unsplash.com/photo-1571575173700-afb9492e6a50?auto=format&fit=crop&q=80&w=600',
+    image: 'https://i.postimg.cc/pLXPm2HP/Honeydew.jpg', // Updated to the new direct image link
     color: 'bg-green-50'
   },
   {
@@ -77,7 +77,7 @@ export const PRODUCTS: Product[] = [
     description: 'The King of Fruits. Rich, creamy, and undeniably bold.',
     price: 2.00,
     category: 'Premium',
-    image: 'https://images.unsplash.com/photo-1595033538458-94800155e96b?auto=format&fit=crop&q=80&w=600',
+    image: 'https://i.postimg.cc/Gmhb4cCp/Durian.jpg', // Updated to the new direct image link
     color: 'bg-yellow-50'
   },
   {
