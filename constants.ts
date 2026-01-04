@@ -86,7 +86,7 @@ export const PRODUCTS: Product[] = [
     description: 'The classic sarsaparilla root beer flavor. Coming soon!',
     price: 2.00,
     category: 'Limited',
-    image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&q=80&w=600',
+    image: 'https://i.postimg.cc/440NyWbp/Sarsi.jpg', // Updated to the new direct image link
     color: 'bg-slate-100',
     isComingSoon: true
   },
@@ -96,7 +96,7 @@ export const PRODUCTS: Product[] = [
     description: 'Earthy, rich, and premium green tea goodness. Coming soon!',
     price: 2.00,
     category: 'Classic',
-    image: 'https://images.unsplash.com/photo-1582781201157-11daa664160a?auto=format&fit=crop&q=80&w=600',
+    image: 'https://i.postimg.cc/7YTP2Smh/Matcha.jpg', // Updated to the new direct image link
     color: 'bg-emerald-50',
     isComingSoon: true
   },
@@ -106,7 +106,7 @@ export const PRODUCTS: Product[] = [
     description: 'A sophisticated coffee treat with a creamy foam-like finish. Coming soon!',
     price: 2.00,
     category: 'Premium',
-    image: 'https://images.unsplash.com/photo-1534706936160-d5ee67737049?auto=format&fit=crop&q=80&w=600',
+    image: 'https://i.postimg.cc/wTsxmD07/Cappucino.jpg', // Updated to the new direct image link
     color: 'bg-stone-100',
     isComingSoon: true
   },
@@ -116,7 +116,7 @@ export const PRODUCTS: Product[] = [
     description: 'Sweet, tart, and bursting with berry flavor. Coming soon!',
     price: 2.00,
     category: 'Classic',
-    image: 'https://images.unsplash.com/photo-1518635017498-87f514b751ba?auto=format&fit=crop&q=80&w=600',
+    image: 'https://i.postimg.cc/CLfMqbmd/Strawberry.jpg', // Updated to the new direct image link
     color: 'bg-rose-50',
     isComingSoon: true
   },
@@ -126,7 +126,7 @@ export const PRODUCTS: Product[] = [
     description: 'Tropical paradise in every bite. Sweet, sun-ripened mango. Coming soon!',
     price: 2.00,
     category: 'Classic',
-    image: 'https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&q=80&w=600',
+    image: 'https://i.postimg.cc/CLfMqbm1/Mango.jpg', // Updated to the new direct image link
     color: 'bg-orange-50',
     isComingSoon: true
   }
