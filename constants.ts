@@ -1,24 +1,9 @@
-
 import { Product } from './types';
 
 export const WHATSAPP_NUMBER = "6588684732"; 
-export const BUSINESS_NAME = "AIR BATU MALAYSIA / ICE LOLLY MALAYSIA";
+export const BUSINESS_NAME = "AIR BATU MALAYSIA";
 export const PICKUP_LOCATION = "131B Tengah Garden Avenue";
-export const PICKUP_UNIT = "#08-318";
-export const STAFF_PASSWORD = "1234"; 
-export const ORDER_NOTIFICATION_SOUND = "https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3";
-
-// Firebase Configuration using your provided credentials
-export const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyBLMBzd_b82l9_sBn6X3-r6kUKUQ_i2tHQ",
-  authDomain: "air-batu-malaysia.firebaseapp.com",
-  databaseURL: "https://air-batu-malaysia-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "air-batu-malaysia",
-  storageBucket: "air-batu-malaysia.firebasestorage.app",
-  messagingSenderId: "297827620010",
-  appId: "1:297827620010:web:bc42a879c85aaefb84acd3",
-  measurementId: "G-56TN0DVFV5"
-};
+export const PICKUP_PRIVACY_NOTE = "Unit number provided upon order confirmation.";
 
 export const PRODUCTS: Product[] = [
   {
@@ -146,4 +131,4 @@ export const PRODUCTS: Product[] = [
 ];
 
 export const ALL_PRODUCT_IDS = PRODUCTS.map(p => p.id);
-export const INITIAL_STOCK_COUNT = 20;
+export const INITIAL_STOCK_COUNT = 99;

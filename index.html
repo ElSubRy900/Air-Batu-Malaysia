@@ -44,6 +44,7 @@
             color: var(--text-color);
             transition: background-color 0.4s ease, color 0.4s ease;
             font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            -webkit-overflow-scrolling: touch;
         }
 
         #root {
@@ -68,6 +69,14 @@
             background: linear-gradient(to right, #ef4444, #facc15, #22c55e);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
         @media screen and (min-width: 641px) {

@@ -8,42 +8,24 @@ interface NavbarProps {
   onToggleTheme: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart, onOpenTrack, currentTheme, onToggleTheme }) => {
+const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart, currentTheme, onToggleTheme }) => {
   return (
     <nav className="sticky top-0 z-40 theme-nav backdrop-blur-xl border-b px-2 sm:px-6 transition-colors w-full shadow-lg h-16 sm:h-20 flex items-center pt-[env(safe-area-inset-top,0px)]">
-      {/* 
-          Main Container: 
-          Uses a balanced flex layout. The left and right "anchors" are flex-1 
-          to push the trust bar to the center, but they allow the center to 
-          occupy the space it needs on small screens.
-      */}
       <div className="flex justify-between items-center w-full max-w-[1400px] mx-auto">
+        <div className="flex-1 hidden sm:flex items-center justify-start"></div>
         
-        {/* Left Anchor: Balancer for centering */}
-        <div className="flex-1 hidden sm:flex items-center justify-start">
-          {/* Empty on mobile to maximize center space */}
-        </div>
-        
-        {/* Center: Trust Bar (Frozen, Tengah, Premium) */}
         <div className="flex flex-[2] sm:flex-initial justify-center items-center px-1">
           <div className="flex items-center gap-1.5 sm:gap-4 py-1.5 px-2.5 sm:px-5 border border-[var(--border-color)] sm:border-y sm:border-x-0 bg-slate-500/5 sm:bg-transparent rounded-full sm:rounded-none">
-            {/* Frozen */}
             <div className="flex items-center gap-1 flex-shrink-0">
               <span className="text-[10px] sm:text-xs">❄️</span>
               <span className="text-[7px] sm:text-[10px] font-black uppercase tracking-widest theme-text-muted whitespace-nowrap">Frozen</span>
             </div>
-            
             <div className="w-px h-2.5 bg-[var(--border-color)] opacity-30 flex-shrink-0"></div>
-            
-            {/* Tengah */}
             <div className="flex items-center gap-1 flex-shrink-0">
               <span className="text-[10px] sm:text-xs">📍</span>
               <span className="text-[7px] sm:text-[10px] font-black uppercase tracking-widest theme-text-muted whitespace-nowrap">Tengah</span>
             </div>
-            
             <div className="w-px h-2.5 bg-[var(--border-color)] opacity-30 flex-shrink-0"></div>
-            
-            {/* Premium */}
             <div className="flex items-center gap-1 flex-shrink-0">
               <span className="text-[10px] sm:text-xs">✨</span>
               <span className="text-[7px] sm:text-[10px] font-black uppercase tracking-widest theme-text-muted whitespace-nowrap">Premium</span>
@@ -51,20 +33,7 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart, onOpenTrack, cur
           </div>
         </div>
         
-        {/* Right Anchor: Action Tools */}
         <div className="flex-1 flex justify-end items-center gap-1 sm:gap-3">
-          {/* Search/Track */}
-          <button 
-            onClick={onOpenTrack}
-            className="w-8 h-8 sm:w-11 sm:h-11 flex items-center justify-center bg-slate-500/5 rounded-lg sm:rounded-xl text-[var(--text-color)] hover:bg-slate-500/10 hover:text-pink-400 transition-all active:scale-90 border border-[var(--border-color)]"
-            aria-label="Track Receipt"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" className="sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-            </svg>
-          </button>
-
-          {/* Theme Toggle */}
           <button 
             onClick={onToggleTheme}
             className="w-8 h-8 sm:w-11 sm:h-11 flex items-center justify-center bg-slate-500/5 rounded-lg sm:rounded-xl text-[var(--text-color)] hover:bg-slate-500/10 transition-all active:scale-90 border border-[var(--border-color)]"
@@ -81,7 +50,6 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart, onOpenTrack, cur
             )}
           </button>
 
-          {/* Cart */}
           <button 
             onClick={onOpenCart}
             className="relative w-8 h-8 sm:w-11 sm:h-11 flex items-center justify-center bg-slate-500/5 rounded-lg sm:rounded-xl text-[var(--text-color)] hover:bg-slate-500/10 hover:text-pink-400 transition-all active:scale-90 border border-[var(--border-color)]"
