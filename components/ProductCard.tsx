@@ -58,7 +58,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, currentStock, isShop
           }`}
         >
           {/* Prioritize 'Shop Closed' if shop is not open */}
-          {!isShopOpen ? 'Shop Closed' : (isSoldOut ? 'Sold Out' : isComingSoon ? 'Soon' : 'Add to Basket')}
+          {!isShopOpen ? 'Shop Closed' : (isSoldOut ? 'Sold Out' : isComingSoon ? 'Soon' : '+ ADD TO BASKET')}
         </button>
       </div>
     </div>

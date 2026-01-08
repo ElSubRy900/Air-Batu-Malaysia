@@ -3,7 +3,7 @@ import Navbar from './components/Navbar.tsx';
 import ProductCard from './components/ProductCard.tsx';
 import Cart from './components/Cart.tsx';
 import { Product, CartItem } from './types.ts';
-import { PRODUCTS, PICKUP_LOCATION, PICKUP_PRIVACY_NOTE, WHATSAPP_NUMBER } from './constants.ts';
+import { PRODUCTS, PICKUP_LOCATION, PICKUP_PRIVACY_NOTE, WHATSAPP_NUMBER, BUSINESS_NAME } from './constants.ts';
 import { useShopStore } from './useShopStore.ts';
 
 const App: React.FC = () => {
@@ -59,7 +59,7 @@ const App: React.FC = () => {
     const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
     
     // pickupTime is now directly in 12-hour format (e.g. "07:30 PM") from the Cart component
-    const message = `New Order for Air Batu Malaysia!\n\nCustomer Name: ${customerName}\nPickup Time: ${pickupTime}\n\nItems:\n${itemsList}\n\nTotal Price: $${total}`;
+    const message = `New Order for ${BUSINESS_NAME}!\n\nCustomer Name: ${customerName}\nPickup Time: ${pickupTime}\n\nItems:\n${itemsList}\n\nTotal Price: $${total}`;
     
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
@@ -94,9 +94,11 @@ const App: React.FC = () => {
 
       <main className={`flex-1 px-4 sm:px-8 pt-4 w-full ${cartItemCount > 0 ? 'pb-32' : 'pb-20'} relative`}>
         <header className="mb-8 text-center flex flex-col items-center">
-          <h1 className="font-kampung text-4xl sm:text-5xl md:text-6xl tracking-tighter leading-tight font-black text-gradient-primary mb-8 max-w-lg">
-            AIR BATU MALAYSIA
-          </h1>
+          <div className="w-full flex justify-center items-center overflow-visible px-2">
+            <h1 className="font-kampung text-[8.2vw] sm:text-[40px] md:text-[48px] tracking-tight leading-none font-black text-gradient-primary whitespace-nowrap pt-4 pb-8 text-center">
+              {BUSINESS_NAME}
+            </h1>
+          </div>
           
           <div className="bg-slate-500/5 border border-[var(--border-color)] p-6 rounded-[2.5rem] shadow-lg w-full max-w-xs flex flex-col items-center gap-3">
              <p className="theme-text-muted text-[10px] font-black uppercase tracking-[0.2em]">Self Pickup Point</p>
@@ -131,6 +133,12 @@ const App: React.FC = () => {
             ))}
           </div>
         </section>
+
+        <footer className="mt-12 py-12 text-center border-t border-[var(--border-color)]">
+          <p className="text-[10px] font-black theme-text-muted uppercase tracking-[0.2em]">
+            © {new Date().getFullYear()} {BUSINESS_NAME}. All right reserved.
+          </p>
+        </footer>
       </main>
 
       {cartItemCount > 0 && (

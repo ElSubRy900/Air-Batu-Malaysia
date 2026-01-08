@@ -1,7 +1,7 @@
 import { Product } from './types';
 
 export const WHATSAPP_NUMBER = "6588684732"; 
-export const BUSINESS_NAME = "AIR BATU MALAYSIA";
+export const BUSINESS_NAME = "Air Batu / Ice Lollies Sg";
 export const PICKUP_LOCATION = "131B Tengah Garden Avenue";
 export const PICKUP_PRIVACY_NOTE = "Unit number provided upon order confirmation.";
 
